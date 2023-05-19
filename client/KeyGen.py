@@ -33,8 +33,8 @@ def int_to_string(i):
 def KeyPairGenerator():
     
     while(True):
-        p = getStrongPrime(1024,e=0 ,false_positive_prob=1e-06, randfunc=get_random_bytes)
-        q = getStrongPrime(1024,e=0 ,false_positive_prob=1e-06, randfunc=get_random_bytes)
+        p = getStrongPrime(512,e=0 ,false_positive_prob=1e-06, randfunc=get_random_bytes)
+        q = getStrongPrime(512,e=0 ,false_positive_prob=1e-06, randfunc=get_random_bytes)
         n = p * q
         phi = (p-1)*(q-1)
         if(math.gcd(e, phi) == 1):
@@ -50,7 +50,9 @@ def KeyPairGenerator():
             ##PublicKey
             print("---RSA PUBLIC KEY---")
             print(publicKey)
-            print("---RSA PUBLIC KEY---\n") 
+            print("---RSA PUBLIC KEY---\n")
+
+            
             return publicKey,privateKey;
         else:
             continue
