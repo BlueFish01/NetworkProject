@@ -1,6 +1,7 @@
 from KeyGen import *
 from Crypto.Hash import SHA256
 import os
+import json
 
 
 #check if keyFile is exits
@@ -16,10 +17,10 @@ def init():
 
         publicKey,privateKey = KeyPairGenerator()
 
-        data = {'PrivateKey':privateKey,
-                'PucblicKey':publicKey }
+        data = {"PrivateKey":privateKey.decode(),
+                "PublicKey":publicKey.decode()}
         
         with open("Keypair.key","w+") as fileWriter:
-            fileWriter.write(str(data))
+            fileWriter.write(json.dumps(data))
         
 

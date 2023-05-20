@@ -33,8 +33,10 @@ def int_to_string(i):
 def KeyPairGenerator():
     
     while(True):
+
         p = getStrongPrime(512,e=0 ,false_positive_prob=1e-06, randfunc=get_random_bytes)
         q = getStrongPrime(512,e=0 ,false_positive_prob=1e-06, randfunc=get_random_bytes)
+        
         n = p * q
         phi = (p-1)*(q-1)
         if(math.gcd(e, phi) == 1):
@@ -42,6 +44,7 @@ def KeyPairGenerator():
             publicKey = base64.b64encode(str(n).encode('utf-8'))
             privateKey = base64.b64encode(str(d).encode('utf-8'))
             print("\ne =",e,"\n" )
+
             ##PrivateKey
             print("---RSA PRIVATE KEY---")
             print(privateKey)
@@ -66,13 +69,13 @@ def DecryptText(privateKey,publicKey,encryptedText):
     text = pow(encryptedText,int(base64.b64decode(privateKey).decode('utf-8')),mod=int(base64.b64decode(publicKey).decode('utf-8')))
     return int_to_string(text)
 
-def EncryptPDF(publicKey,text):
-    encryptedText = pow(text,e,mod=int(base64.b64decode(publicKey).decode('utf-8')))
-    return encryptedText;
+def DecryptPDF(publicKey,encryptedText):
+    text = pow(encryptedText,e,mod=int(base64.b64decode(publicKey).decode('utf-8')))
+    return text;
 
-def DecryptPDF(privateKey,publicKey,encryptedText):
-    text = pow(encryptedText,int(base64.b64decode(privateKey).decode('utf-8')),mod=int(base64.b64decode(publicKey).decode('utf-8')))
-    return text
+def EncryptPDF(privateKey,publicKey,text):
+    encryptedText = pow(text,int(base64.b64decode(privateKey).decode('utf-8')),mod=int(base64.b64decode(publicKey).decode('utf-8')))
+    return encryptedText
 
 
 
