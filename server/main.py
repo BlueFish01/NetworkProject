@@ -1,9 +1,11 @@
 from typing_extensions import Annotated
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.responses import FileResponse
+import os
 from database import *
 import json
 import base64
+
 
 app = FastAPI()
 
@@ -34,7 +36,7 @@ async def upload(PDF: UploadFile,data: Annotated[str,Form()],certificate: Annota
     uploadPDF(int(dict["TimeStamp"]),
               dict["Receiver"],
               dict["Sender"],
-              str(f'{dict["TimeStamp"]}.pdf'),
+              str(f'{dict["TimeStamp"]}.bin'),
               certificate)
     
     return {"data":dict["Sender"]}
@@ -58,6 +60,7 @@ async def getPdfFile(id: Annotated[str, Form()]):
 
     pdf = open(f'./PDF/{DataDict["filePath"]}',"rb")
     pdfBytes = pdf.read()
+    # AesTemp = AESencrypt(pdfBytes)
     pdfStr = base64.b64encode(pdfBytes)
 
     File = pdfStr
@@ -68,5 +71,17 @@ async def getPdfFile(id: Annotated[str, Form()]):
     
     return(DataDict,File)
     
+@app.delete("/inbox")
+async def deleteInbox(id: Annotated[str, Form()]):
 
+    Path = f'./PDF/{id}.bin'
+
+    if os.path.exists(Path):
+        os.remove(Path)
+    else:
+        return("The file does not exist")
+
+    deletePDF(int(id))
+
+    return("File is deleted")
     

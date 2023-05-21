@@ -49,5 +49,10 @@ def getKey(sender):
     c.execute("SELECT publicKey FROM users WHERE email=:email",{'email':sender})
     return c.fetchone()
 
+def deletePDF(id):
+    c.execute("DELETE FROM pdf WHERE id=:id",{'id':id})
+    conn.commit()
+    return
+
 def CloseConnection():
     conn.close()
